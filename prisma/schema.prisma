@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model MedicalCenter {
+  id                    String   @id @default(uuid())
+  medicalCenterIdNumber Int      @unique
+  name                  String
+  createdAt             DateTime @default(now())
+  
+  admins Admin[]
+  users  User[]
+}
+
+model Admin {
+  id              String         @id @default(uuid())
+  username        String         @unique
+  password        String
+  medicalCenterId String
+  createdAt       DateTime       @default(now())
+  
+  medicalCenter   MedicalCenter  @relation(fields: [medicalCenterId], references: [id])
+}
+
+model User {
+  id              String         @id @default(uuid())
+  medicalCenterId String 
+  name            String
+  gender          String
+  age             Int        
+  residentNumber  String         @unique
+  createdAt       DateTime       @default(now())
+  
+  medicalCenter   MedicalCenter  @relation(fields: [medicalCenterId], references: [id])
+  testResults     TestResult[]
+}
+
+model TestResult {
+  id               String   @id @default(uuid())
+  specimenNumber   String   @unique
+  recipientName    String
+  gender           String
+  age              Int   
+  chartNumber      Int   
+  receptionDate    DateTime           
+  receptionNumber  String             
+  testCode         String             
+  hospitalTestCode String               
+  testName         String            
+  textResult       String?            
+  sentenceResult   String?            
+  highLow          String?              
+  remark           String?              
+  referenceRange   String?           
+  createdAt        DateTime @default(now())
+  
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+}
