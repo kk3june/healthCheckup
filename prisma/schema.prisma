@@ -7,58 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model MedicalCenter {
-  id                    String   @id @default(uuid())
-  medicalCenterIdNumber Int      @unique
-  name                  String
-  createdAt             DateTime @default(now())
-  
-  admins Admin[]
-  users  User[]
-}
-
 model Admin {
-  id              String         @id @default(uuid())
-  username        String         @unique
-  password        String
-  medicalCenterId String
-  createdAt       DateTime       @default(now())
-  
-  medicalCenter   MedicalCenter  @relation(fields: [medicalCenterId], references: [id])
+  id                   String   @id @default(uuid())
+  admin_id             String   @unique
+  admin_name           String
+  password             String
+  medicalcenter_name   String
+  medicalcenter_number Int      @unique
+  createdAt            DateTime @default(now())
 }
 
 model User {
-  id              String         @id @default(uuid())
-  medicalCenterId String 
-  name            String
-  gender          String
-  age             Int        
-  residentNumber  String         @unique
-  createdAt       DateTime       @default(now())
-  
-  medicalCenter   MedicalCenter  @relation(fields: [medicalCenterId], references: [id])
-  testResults     TestResult[]
+  id                   String       @id @default(uuid())
+  medicalcenter_number Int          @unique
+  name                 String
+  gender               String
+  age                  Int
+  residentNumber       String       @unique
+  createdAt            DateTime     @default(now())
+  testResults          TestResult[]
 }
 
 model TestResult {
-  id               String   @id @default(uuid())
-  specimenNumber   String   @unique
-  recipientName    String
-  gender           String
-  age              Int   
-  chartNumber      Int   
-  receptionDate    DateTime           
-  receptionNumber  String             
-  testCode         String             
-  hospitalTestCode String               
-  testName         String            
-  textResult       String?            
-  sentenceResult   String?            
-  highLow          String?              
-  remark           String?              
-  referenceRange   String?           
-  createdAt        DateTime @default(now())
-  
-  userId           String
-  user             User     @relation(fields: [userId], references: [id])
+  id                String   @id @default(uuid())
+  specimen_number   String   @unique
+  recipient_name    String
+  gender            String
+  age               Int
+  chartNumber       Int
+  reception_date    DateTime
+  reception_number  String
+  testCode          String
+  hospital_testcode String
+  test_name         String
+  text_result       String?
+  sentence_result   String?
+  highLow           String?
+  remark            String?
+  reference_range   String?
+  createdAt         DateTime @default(now())
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id])
 }
