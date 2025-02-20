@@ -50,7 +50,7 @@ export async function logIn(prevState: any, formData: FormData) {
   });
   const ok = result.data?.password === admin?.password;
   if (ok) {
-    redirect('/result');
+    redirect('/upload');
   } else {
     return {
       fieldErrors: {

@@ -11,9 +11,9 @@ function Login() {
     password: '',
   });
   const [state, dispatch, error] = useActionState(logIn, null);
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
 
+  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setInitialState({
       ...initialState,
       [name]: value,
@@ -28,7 +28,7 @@ function Login() {
           type="text"
           placeholder="아이디"
           value={initialState.admin_id}
-          onChange={onChange}
+          onChange={onChangeInput}
           errors={state?.fieldErrors.admin_id}
         />
         <Input
@@ -36,7 +36,7 @@ function Login() {
           type="password"
           placeholder="비밀번호"
           value={initialState.password}
-          onChange={onChange}
+          onChange={onChangeInput}
           errors={state?.fieldErrors.password}
         />
         <button className="primary-btn">로그인</button>
