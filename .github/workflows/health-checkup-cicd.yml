@@ -1,0 +1,39 @@
+name: health-checkup-cicd
+
+on:
+  push:
+   branches:
+     - main
+     - develop
+
+jobs:
+  build: 
+    name: Deploy to Vercel
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Deploy to Vercel (Preview for develop)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          npm install -g vercel
+          vercel --token=${{ secrets.VERCEL_TOKEN }} \
+                 --project-id=${{ secrets.VERCEL_PROJECT_ID }} \
+
+      - name: Deploy to Vercel (Production for main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          npm install -g vercel
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }} \
+                 --project-id=${{ secrets.VERCEL_PROJECT_ID }} \
+
+     
