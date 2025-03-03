@@ -32,7 +32,7 @@ function CreateAccount() {
           placeholder="아이디"
           value={initialState.admin_id}
           onChange={onChangeInput}
-          errors={state?.error?.fieldErrors.admin_id}
+          errors={state?.fieldErrors.admin_id}
         />
         <Input
           name="admin_name"
@@ -40,7 +40,7 @@ function CreateAccount() {
           placeholder="성명"
           value={initialState.admin_name}
           onChange={onChangeInput}
-          errors={state?.error?.fieldErrors.admin_name}
+          errors={state?.fieldErrors.admin_name}
         />
         <Input
           name="medicalcenter_name"
@@ -48,7 +48,7 @@ function CreateAccount() {
           placeholder="소속기관명"
           value={initialState.medicalcenter_name}
           onChange={onChangeInput}
-          errors={state?.error?.fieldErrors.medicalcenter_name}
+          errors={state?.fieldErrors.medicalcenter_name}
         />
         <Input
           name="medicalcenter_number"
@@ -56,7 +56,7 @@ function CreateAccount() {
           placeholder="요양기관번호"
           value={initialState.medicalcenter_number}
           onChange={onChangeInput}
-          errors={state?.error?.fieldErrors.medicalcenter_number}
+          errors={state?.fieldErrors.medicalcenter_number}
         />
         <Input
           name="password"
@@ -64,7 +64,7 @@ function CreateAccount() {
           placeholder="비밀번호"
           value={initialState.password}
           onChange={onChangeInput}
-          errors={state?.error?.fieldErrors.password}
+          errors={state?.fieldErrors.password}
         />
         <Input
           name="confirm_password"
@@ -72,7 +72,7 @@ function CreateAccount() {
           placeholder="비밀번호 확인"
           value={initialState.confirm_password}
           onChange={onChangeInput}
-          errors={state?.error?.fieldErrors.confirm_password}
+          errors={state?.fieldErrors.confirm_password}
         />
         <button className="primary-btn">회원가입</button>
       </form>

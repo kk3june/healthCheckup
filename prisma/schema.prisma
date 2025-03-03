@@ -13,13 +13,13 @@ model Admin {
   admin_name           String
   password             String
   medicalcenter_name   String
-  medicalcenter_number Int      @unique
+  medicalcenter_number String      @unique
   createdAt            DateTime @default(now())
 }
 
 model User {
   id                   String       @id @default(uuid())
-  medicalcenter_number Int          @unique
+  medicalcenter_number String          @unique
   name                 String
   gender               String
   age                  Int

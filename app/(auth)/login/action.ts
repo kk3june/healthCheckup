@@ -38,20 +38,30 @@ export async function logIn(prevState: any, formData: FormData) {
     admin_id: formData.get('admin_id')?.toString() ?? '',
     password: formData.get('password')?.toString() ?? '',
   };
+
   const result = await formSchema.spa(data);
+
+  if (!result.success) {
+    return {
+      fieldErrors: result.error.flatten().fieldErrors,
+    };
+  }
+
   const admin = await db.admin.findUnique({
-    where: {
-      admin_id: result.data?.admin_id,
-    },
-    select: {
-      admin_id: true,
-      password: true,
-    },
+    where: { admin_id: result.data.admin_id },
+    select: { admin_id: true, password: true },
   });
-  const ok = result.data?.password === admin?.password;
-  if (ok) {
-    redirect('/upload');
-  } else {
+
+  if (!admin) {
+    return {
+      fieldErrors: {
+        admin_id: ['아이디가 존재하지 않습니다.'],
+        password: [],
+      },
+    };
+  }
+
+  if (result.data.password !== admin.password) {
     return {
       fieldErrors: {
         password: ['비밀번호를 다시 확인해주세요.'],
@@ -59,4 +69,6 @@ export async function logIn(prevState: any, formData: FormData) {
       },
     };
   }
+
+  redirect('/upload');
 }

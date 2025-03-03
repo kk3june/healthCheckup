@@ -69,23 +69,48 @@ export async function createAccount(prevState: any, formData: FormData) {
 
   if (!result.success) {
     return {
-      error: result.error.flatten(),
+      fieldErrors: result.error.flatten().fieldErrors,
       values: data,
     };
-  } else {
-    const admin = await db.admin.create({
-      data: {
-        admin_id: result.data.admin_id,
-        admin_name: result.data.admin_name,
-        medicalcenter_name: result.data.medicalcenter_name,
-        medicalcenter_number: Number(result.data.medicalcenter_number),
-        password: result.data.password,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    redirect('/login');
   }
+
+  const existingAdmin = await db.admin.findUnique({
+    where: { admin_id: result.data.admin_id },
+    select: { id: true },
+  });
+
+  if (existingAdmin) {
+    return {
+      fieldErrors: {
+        admin_id: ['이미 존재하는 아이디입니다.'],
+      },
+      values: data,
+    };
+  }
+
+  const existingMedicalCenter = await db.admin.findUnique({
+    where: { medicalcenter_number: data.medicalcenter_number },
+    select: { id: true },
+  });
+
+  if (existingMedicalCenter) {
+    return {
+      fieldErrors: {
+        medicalcenter_number: ['이미 등록된 요양기관번호입니다.'],
+      },
+      values: data,
+    };
+  }
+
+  await db.admin.create({
+    data: {
+      admin_id: result.data.admin_id,
+      admin_name: result.data.admin_name,
+      medicalcenter_name: result.data.medicalcenter_name,
+      medicalcenter_number: result.data.medicalcenter_number,
+      password: result.data.password,
+    },
+  });
+
+  redirect('/login');
 }
